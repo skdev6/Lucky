@@ -4,418 +4,272 @@
   jQuery(function () {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
 
-    // smooth scroll full section
-    // if ($(".panel-wrapper").length > 0) {
-    //   const panels = gsap.utils.toArray(".panel");
-    //   let currentIndex = 0;
-    //   let animating = false;
+  if ($(".panel-wrapper").length > 0) {
+    const panels = gsap.utils.toArray(".panel");
+    let currentIndex = 0;
+    let animating = false;
+    let modalOpen = false; // track modal globally
 
-    //   function setVH() {
-    //     const vh = window.innerHeight * 0.01;
-    //     document.documentElement.style.setProperty("--vh", `${vh}px`);
-    //     panels.forEach((panel) => {
-    //       panel.style.height = `${window.innerHeight}px`;
-    //     });
-    //   }
-    //   setVH();
-    //   window.addEventListener("resize", setVH);
-    //   window.addEventListener("orientationchange", setVH);
-    //   function scrollToPanel(index) {
-    //     if (index < 0) index = 0;
-    //     if (index >= panels.length) index = panels.length - 1;
-    //     animating = true;
-
-    //     gsap.to(window, {
-    //       scrollTo: { y: index * window.innerHeight },
-    //       duration: 1.5,
-    //       ease: "power2.out",
-    //       onComplete: () => (animating = false),
-    //     });
-
-    //     currentIndex = index;
-    //   }
-
-    //   Observer.create({
-    //     target: window,
-    //     type: "touch,wheel",
-    //     wheelSpeed: -1,
-    //     preventDefault: true,
-    //     onWheel: (self) => {
-    //       if (animating) return;
-    //       if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-    //       else scrollToPanel(currentIndex + 1);
-    //     },
-    //     onChangeY: (self) => {
-    //       if (animating) return;
-    //       if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-    //       else if (self.deltaY < 0) scrollToPanel(currentIndex + 1);
-    //     },
-    //   });
-
-    //   gsap.set(window, { scrollTo: 0 });
-    // }
-
-    if ($(".panel-wrapper").length > 0) {
-      const panels = gsap.utils.toArray(".panel");
-      let currentIndex = 0;
-      let animating = false;
-      let modalOpen = false; // track modal globally
-
-      function setVH() {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-        panels.forEach((panel) => {
-          panel.style.height = `${window.innerHeight}px`;
-        });
-      }
-      setVH();
-      window.addEventListener("resize", setVH);
-      window.addEventListener("orientationchange", setVH);
-
-      function scrollToPanel(index) {
-        if (index < 0) index = 0;
-        if (index >= panels.length) index = panels.length - 1;
-        animating = true;
-
-        gsap.to(window, {
-          scrollTo: { y: index * window.innerHeight },
-          duration: 1.5,
-          ease: "power2.out",
-          onComplete: () => (animating = false),
-        });
-
-        currentIndex = index;
-      }
-
-      // Full-page scroll Observer
-      const panelObserver = Observer.create({
-        target: window,
-        type: "touch,wheel",
-        wheelSpeed: -1,
-        preventDefault: true,
-        onWheel: (self) => {
-          if (animating || modalOpen) return; // ✅ block scroll if modal active
-          if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-          else scrollToPanel(currentIndex + 1);
-        },
-        onChangeY: (self) => {
-          if (animating || modalOpen) return; // ✅ block scroll if modal active
-          if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-          else if (self.deltaY < 0) scrollToPanel(currentIndex + 1);
-        },
-      });
-
-      gsap.set(window, { scrollTo: 0 });
-
-      // =======================
-      // Modal logic
-      // =======================
-      const $lastPanel = $("#lastPanel");
-      const $drf = $(".drf");
-
-      $(".drf img").on("click", function () {
-        if (modalOpen) return;
-
-        modalOpen = true;
-        $drf.addClass("hidden");
-        $lastPanel.addClass("last-panel-active");
-        $("body").css("overflow", "hidden"); // disable body scroll
-
-        gsap.fromTo(
-          $lastPanel,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.6, ease: "power2.out" }
-        );
-      });
-
-      function closeModal() {
-        if (!modalOpen) return;
-
-        modalOpen = false;
-
-        gsap.to($lastPanel, {
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            $lastPanel.removeClass("last-panel-active");
-            gsap.set($lastPanel, { opacity: 1 });
-            $drf.removeClass("hidden");
-            $("body").css("overflow", "visible"); // restore scroll
-          },
-        });
-      }
-
-      // Close modal on scroll/wheel/touchmove
-      Observer.create({
-        target: window,
-        type: "wheel,touch",
-        wheelSpeed: -1,
-        preventDefault: true,
-        onWheel: closeModal,
-        onTouchMove: closeModal,
+    function setVH() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+      panels.forEach((panel) => {
+        panel.style.height = `${window.innerHeight}px`;
       });
     }
+    setVH();
+    window.addEventListener("resize", setVH);
+    window.addEventListener("orientationchange", setVH);
 
-    // pannel hero
-    if ($(".panel-hero").length > 0) {
-      const firstTitle = document.querySelector(".first-title");
-      const secondTitle = document.querySelector(".second-title");
-      const ftr = document.querySelector(".first-title-wrapper");
-      const oc = document.querySelector(".oc");
-      let offset =
-        window.innerWidth < 992
-          ? window.innerHeight * 0.4
-          : window.innerHeight * 0.25;
-      let targetScale = window.innerWidth < 992 ? 0.7 : 0.2;
-      ScrollTrigger.create({
-        trigger: ".panel-hero",
-        start: `top -${offset}px`,
-        endTrigger: ".df",
-        end: "top top",
-        pin: ".panel-hero .panel__inner",
-        pinSpacing: false,
-        scrub: 1.5,
+    function scrollToPanel(index) {
+      if (index < 0) index = 0;
+      if (index >= panels.length) index = panels.length - 1;
+      animating = true;
 
-        onEnter: () => {
-          const rect = firstTitle.getBoundingClientRect();
-          const currentTop = rect.top;
-
-          const fixedOffset = window.innerWidth < 992 ? 25 : 10;
-
-          gsap.to(firstTitle, {
-            y: fixedOffset - currentTop,
-            scale: targetScale,
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-
-          gsap.to(secondTitle, {
-            scale: 0.2,
-            y: "-100%",
-            transformOrigin: "top center",
-            duration: 2,
-            ease: "expo.out",
-          });
-          gsap.to(oc, {
-            y: "-100%",
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-          gsap.to(ftr, {
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-        },
-
-        onLeaveBack: () => {
-          gsap.to(firstTitle, {
-            y: 0,
-            scale: 1,
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-          gsap.to(ftr, {
-            scale: 1,
-            opacity: 1,
-            y: "0%",
-            duration: 1.5,
-            ease: "expo.out",
-            transformOrigin: "top center",
-          });
-          gsap.to(oc, {
-            y: "0%",
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-
-          gsap.to(secondTitle, {
-            scale: 1,
-            opacity: 1,
-            y: "0%",
-            duration: 1.5,
-            ease: "expo.out",
-            transformOrigin: "top center",
-          });
-        },
+      gsap.to(window, {
+        scrollTo: { y: index * window.innerHeight },
+        duration: 1.5,
+        ease: "power2.out",
+        onComplete: () => (animating = false),
       });
 
-      document.fonts.ready.then(() => {
-        let firstSplit = new SplitText(firstTitle, { type: "words" });
-        let secondSplit = new SplitText(secondTitle, { type: "words" });
-
-        gsap.set([firstTitle, secondTitle], {
-          opacity: 1,
-          visibility: "visible",
-        });
-        gsap.set([firstSplit.words, secondSplit.words], {
-          opacity: 0,
-          scale: 1,
-        });
-
-        let tl = gsap.timeline({});
-
-        tl.to(firstSplit.words, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.2,
-        }).to(
-          secondSplit.words,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.2,
-          },
-          "-=0.2"
-        );
-      });
+      currentIndex = index;
     }
 
-    // panel two
-    if ($(".panel-two").length > 0) {
-      document.fonts.ready.then(() => {
-        const lines = gsap.utils.toArray(".line-animation");
-        if (lines.length) {
-          gsap.set(lines, { opacity: 0, y: 0, visibility: "visible" });
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: ".sticky-line-wrapper",
-              start: "top 80%",
-              end: "bottom top",
-              toggleActions: "play none none none",
-              markers: false,
-            },
-            delay: 0.4,
-          });
-          lines.forEach((line, index) => {
-            tl.to(
-              line,
-              { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-              index * 0.3
-            );
-          });
-        }
-      });
-    }
+    // Full-page scroll Observer
+    const panelObserver = Observer.create({
+      target: window,
+      type: "touch,wheel",
+      wheelSpeed: -1,
+      preventDefault: true,
+      onWheel: (self) => {
+        if (animating || modalOpen) return; // ✅ block scroll if modal active
+        if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
+        else scrollToPanel(currentIndex + 1);
+      },
+      onChangeY: (self) => {
+        if (animating || modalOpen) return; // ✅ block scroll if modal active
+        if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
+        else if (self.deltaY < 0) scrollToPanel(currentIndex + 1);
+      },
+    });
 
-    // panel three
+    gsap.set(window, { scrollTo: 0 });
 
-    // panel six
-    if ($(".panel-six").length > 0) {
-      const $lastPanel = $("#lastPanel");
-      const $drf = $(".drf");
-      let modalOpen = false;
+    // =======================
+    // Modal logic
+    // =======================
+    const $lastPanel = $("#lastPanel");
+    const $drf = $(".drf");
 
-      // Open modal
-      $(".drf img").on("click", function () {
-        if (modalOpen) return;
+    $(".drf img").on("click", function () {
+      if (modalOpen) return;
 
-        modalOpen = true;
-        $drf.addClass("hidden");
-        $lastPanel.addClass("last-panel-active");
+      modalOpen = true;
+      $drf.addClass("hidden");
+      $lastPanel.addClass("last-panel-active");
+      $("body").css("overflow", "hidden"); // disable body scroll
 
-        // Disable body scroll while modal open
-        $("body").css("overflow", "hidden");
+      gsap.fromTo(
+        $lastPanel,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: "power2.out" }
+      );
+    });
 
-        gsap.fromTo(
-          $lastPanel,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.6, ease: "power2.out" }
-        );
-      });
+    function closeModal() {
+      if (!modalOpen) return;
 
-      // CLOSE MODAL on wheel or touch (mobile)
-      Observer.create({
-        target: window,
-        type: "wheel,touch",
-        wheelSpeed: -1,
-        preventDefault: true,
-        onWheel: closeModal,
-        onTouchMove: closeModal,
-      });
+      modalOpen = false;
 
-      function closeModal(self) {
-        if (!modalOpen) return;
-
-        modalOpen = false;
-
-        gsap.to($lastPanel, {
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            $lastPanel.removeClass("last-panel-active");
-            gsap.set($lastPanel, { opacity: 1 });
-            $drf.removeClass("hidden");
-
-            // Restore body scroll
-            $("body").css("overflow", "visible");
-          },
-        });
-      }
-
-      // Keep DRF visibility for last section
-      $(window).on("scroll", function () {
-        if (modalOpen) return;
-
-        if (isInLastSection()) $drf.addClass("hidden");
-        else $drf.removeClass("hidden");
-      });
-
-      function isInLastSection() {
-        const winTop = $(window).scrollTop();
-        const lastTop = $lastPanel.offset().top;
-        const lastBottom = lastTop + $lastPanel.outerHeight();
-        return winTop >= lastTop - 50 && winTop < lastBottom - 50;
-      }
-    }
-
-    // if ($(".cmf").length > 0) {
-
-    //   const endDistance = window.innerHeight * 2;
-
-    //   ScrollTrigger.create({
-    //     trigger: ".cmf-wrp",
-    //     start: "top top",
-    //     end: `+=${endDistance}`,
-    //     pin: true,
-    //     scrub: true,
-    //   });
-
-    // }
-
-    if ($(".cmf-wrp").length > 0) {
-      const endDistance = window.innerHeight * 2;
-
-      // Pin the section (same as you already had)
-      ScrollTrigger.create({
-        trigger: ".cmf-wrp",
-        start: "top top",
-        end: `+=${endDistance}`,
-        pin: true,
-        scrub: true,
-      });
-      gsap.to(".cmf-wrp .fade-on-scroll", {
+      gsap.to($lastPanel, {
         opacity: 0,
-        y: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".cmf-wrp",
-          start: "top top",
-          end: `+=${endDistance / 2}`,
-          scrub: true,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+          $lastPanel.removeClass("last-panel-active");
+          gsap.set($lastPanel, { opacity: 1 });
+          $drf.removeClass("hidden");
+          $("body").css("overflow", "visible"); // restore scroll
         },
       });
     }
+
+    // Close modal on scroll/wheel/touchmove
+    Observer.create({
+      target: window,
+      type: "wheel,touch",
+      wheelSpeed: -1,
+      preventDefault: true,
+      onWheel: closeModal,
+      onTouchMove: closeModal,
+    });
+  }
+
+
+    let headerTopLogo = null;
+    let heroWrap = $(".panel-hero");
+    let textScale = .3;
+    heroWrap.each(function () {
+      var hero = $(this);
+      var header = $(this).find(".header__area");
+      var titleWrap = $(this).find(".first-title-wrapper");
+      var title = $(this).find(".title-animation");
+      var title2 = $(this).find(".second-title .title-animation");
+      var currentFz = title.css("font-size");
+
+      function titleAni(minimize = true) {
+        if (minimize) {
+          hero.addClass("sticky-header");
+        } else {
+          hero.removeClass("sticky-header");
+        }
+        gsap.to(titleWrap, {
+          scale: minimize ? textScale : 1,
+          ease: "expo.out",
+          transformOrigin: "top 50%",
+          duration: 1,
+          onComplete() {
+            gsap.set(hero, {
+              '--ch': title[0].getBoundingClientRect().height + "px"
+            });
+            headerTopLogo = title[0];
+          }
+        })
+        gsap.to(title2, {
+          height: minimize ? 0 : "auto",
+          ease: "expo.out",
+          duration: 1
+        }, "<");
+      }
+
+      ScrollTrigger.create({
+        trigger: header,
+        start: `top +=${header.position().top - 50}`,
+        end: "top top",
+        onEnter() {
+          titleAni(true);
+        },
+        onEnterBack() {
+          titleAni(false);
+        }
+      })
+
+      ScrollTrigger.create({
+        trigger: header,
+        start: `top top`,
+        end: `+=${$(".page-wrapper").height()}`,
+        pin: true,
+        pinSpacing: false
+      })
+    });
+    let missionTOpTitle = null;
+    $(".join-sec-wrap").each(function () {
+      var panelWrap = $(this);
+      var panel1 = $(this).find(".join-sec-panel1");
+      var panel2 = $(this).find(".join-sec-panel2");
+      var fadeOnScroll = panelWrap.find(".fade-on-scroll");
+      var stickyTop = panelWrap.find(".stick-top");
+      missionTOpTitle = stickyTop;
+      function titleAni(minimize = true) {
+
+        var hTOpClient = headerTopLogo.getBoundingClientRect();
+        var StickyTopClient = stickyTop[0].getBoundingClientRect();
+
+        gsap.to(stickyTop, {
+          scale: minimize ? .4 : 1,
+          ease: "expo.out",
+          y: minimize ? (hTOpClient.y - StickyTopClient.y) + hTOpClient.height : 0,
+          transformOrigin: "top 50%",
+          opacity: minimize ? .5 : 1,
+          duration: 1,
+          onComplete() {
+            gsap.set(heroWrap, {
+              '--ch2': minimize ? stickyTop[0].getBoundingClientRect().height + "px" : 0
+            })
+          }
+        });
+      }
+      ScrollTrigger.create({
+        trigger: panel2,
+        start: "top top",
+        end: "bottom top",
+        onEnter() {
+          titleAni(true);
+          gsap.set(panelWrap, {
+            "pointer-events": "none"
+          })
+        },
+        onEnterBack() {
+          titleAni(false);
+          gsap.set(panelWrap, {
+            "pointer-events": ""
+          })
+        }
+      })
+      gsap.to(fadeOnScroll, {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: panel1,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
+      })
+      ScrollTrigger.create({
+        trigger: panel1,
+        start: `top top`,
+        end: `+=${$(".page-wrapper").height()}`,
+        pin: true,
+        pinSpacing: false
+      })
+    })
+
+    $(".end-mission").each(function () {
+      var hero = $(this);
+      function titleAni(minimize = true) {
+        gsap.to(missionTOpTitle, {
+          opacity: minimize ? 0 : .5
+        });
+        gsap.set(heroWrap, {
+          '--ch2': minimize ? 0 : missionTOpTitle[0].getBoundingClientRect().height + "px"
+        })
+      }
+      ScrollTrigger.create({
+        trigger: hero,
+        start: `top -5%`,
+        end: "top top",
+        onEnter() {
+          titleAni(true);
+        },
+        onEnterBack() {
+          titleAni(false);
+        }
+      })
+    })
+    $(".last-panel").each(function () {
+      var hero = $(this);
+      function titleAni(minimize = true) {
+        gsap.to(".fixed-star",
+          {
+            x: minimize ? "300%" : "0%",
+            ease: "back.Out"
+          }
+        )
+      }
+      ScrollTrigger.create({
+        trigger: hero,
+        start: `top 50%`,
+        end: "top top",
+        onEnter() {
+          titleAni(true);
+        },
+        onEnterBack() {
+          titleAni(false);
+        }
+      })
+    })
+    
 
     $(window).on("beforeunload", function () {
       $(window).scrollTop(0);
