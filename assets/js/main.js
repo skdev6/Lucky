@@ -192,15 +192,16 @@
       }
       ScrollTrigger.create({
         trigger: panel2,
-        start: "top top",
+        start: "top -2%",
         end: "bottom top",
+        markers:true,
         onEnter() {
           titleAni(true);
           gsap.set(panelWrap, {
             "pointer-events": "none"
           })
         },
-        onEnterBack() {
+        onLeaveBack() {
           titleAni(false);
           gsap.set(panelWrap, {
             "pointer-events": ""
@@ -247,7 +248,7 @@
         }
       })
     })
-    $(".last-panel").each(function () {
+    $(".last-panel").each(function () {  
       var hero = $(this);
       function titleAni(minimize = true) {
         gsap.to(".fixed-star",
@@ -259,12 +260,12 @@
       }
       ScrollTrigger.create({
         trigger: hero,
-        start: `top 50%`,
+        start: `top 80%`,
         end: "top top",
         onEnter() {
           titleAni(true);
         },
-        onEnterBack() {
+        onLeaveBack() {
           titleAni(false);
         }
       })
