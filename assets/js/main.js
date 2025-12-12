@@ -56,107 +56,106 @@
     // }
 
     if ($(".panel-wrapper").length > 0) {
-  const panels = gsap.utils.toArray(".panel");
-  let currentIndex = 0;
-  let animating = false;
-  let modalOpen = false; // track modal globally
+      const panels = gsap.utils.toArray(".panel");
+      let currentIndex = 0;
+      let animating = false;
+      let modalOpen = false; // track modal globally
 
-  function setVH() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-    panels.forEach((panel) => {
-      panel.style.height = `${window.innerHeight}px`;
-    });
-  }
-  setVH();
-  window.addEventListener("resize", setVH);
-  window.addEventListener("orientationchange", setVH);
+      function setVH() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+        panels.forEach((panel) => {
+          panel.style.height = `${window.innerHeight}px`;
+        });
+      }
+      setVH();
+      window.addEventListener("resize", setVH);
+      window.addEventListener("orientationchange", setVH);
 
-  function scrollToPanel(index) {
-    if (index < 0) index = 0;
-    if (index >= panels.length) index = panels.length - 1;
-    animating = true;
+      function scrollToPanel(index) {
+        if (index < 0) index = 0;
+        if (index >= panels.length) index = panels.length - 1;
+        animating = true;
 
-    gsap.to(window, {
-      scrollTo: { y: index * window.innerHeight },
-      duration: 1.5,
-      ease: "power2.out",
-      onComplete: () => (animating = false),
-    });
+        gsap.to(window, {
+          scrollTo: { y: index * window.innerHeight },
+          duration: 1.5,
+          ease: "power2.out",
+          onComplete: () => (animating = false),
+        });
 
-    currentIndex = index;
-  }
+        currentIndex = index;
+      }
 
-  // Full-page scroll Observer
-  const panelObserver = Observer.create({
-    target: window,
-    type: "touch,wheel",
-    wheelSpeed: -1,
-    preventDefault: true,
-    onWheel: (self) => {
-      if (animating || modalOpen) return; // ✅ block scroll if modal active
-      if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-      else scrollToPanel(currentIndex + 1);
-    },
-    onChangeY: (self) => {
-      if (animating || modalOpen) return; // ✅ block scroll if modal active
-      if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
-      else if (self.deltaY < 0) scrollToPanel(currentIndex + 1);
-    },
-  });
+      // Full-page scroll Observer
+      const panelObserver = Observer.create({
+        target: window,
+        type: "touch,wheel",
+        wheelSpeed: -1,
+        preventDefault: true,
+        onWheel: (self) => {
+          if (animating || modalOpen) return; // ✅ block scroll if modal active
+          if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
+          else scrollToPanel(currentIndex + 1);
+        },
+        onChangeY: (self) => {
+          if (animating || modalOpen) return; // ✅ block scroll if modal active
+          if (self.deltaY > 0) scrollToPanel(currentIndex - 1);
+          else if (self.deltaY < 0) scrollToPanel(currentIndex + 1);
+        },
+      });
 
-  gsap.set(window, { scrollTo: 0 });
+      gsap.set(window, { scrollTo: 0 });
 
-  // =======================
-  // Modal logic
-  // =======================
-  const $lastPanel = $("#lastPanel");
-  const $drf = $(".drf");
+      // =======================
+      // Modal logic
+      // =======================
+      const $lastPanel = $("#lastPanel");
+      const $drf = $(".drf");
 
-  $(".drf img").on("click", function () {
-    if (modalOpen) return;
+      $(".drf img").on("click", function () {
+        if (modalOpen) return;
 
-    modalOpen = true;
-    $drf.addClass("hidden");
-    $lastPanel.addClass("last-panel-active");
-    $("body").css("overflow", "hidden"); // disable body scroll
+        modalOpen = true;
+        $drf.addClass("hidden");
+        $lastPanel.addClass("last-panel-active");
+        $("body").css("overflow", "hidden"); // disable body scroll
 
-    gsap.fromTo(
-      $lastPanel,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6, ease: "power2.out" }
-    );
-  });
+        gsap.fromTo(
+          $lastPanel,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: "power2.out" }
+        );
+      });
 
-  function closeModal() {
-    if (!modalOpen) return;
+      function closeModal() {
+        if (!modalOpen) return;
 
-    modalOpen = false;
+        modalOpen = false;
 
-    gsap.to($lastPanel, {
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => {
-        $lastPanel.removeClass("last-panel-active");
-        gsap.set($lastPanel, { opacity: 1 });
-        $drf.removeClass("hidden");
-        $("body").css("overflow", "visible"); // restore scroll
-      },
-    });
-  }
+        gsap.to($lastPanel, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            $lastPanel.removeClass("last-panel-active");
+            gsap.set($lastPanel, { opacity: 1 });
+            $drf.removeClass("hidden");
+            $("body").css("overflow", "visible"); // restore scroll
+          },
+        });
+      }
 
-  // Close modal on scroll/wheel/touchmove
-  Observer.create({
-    target: window,
-    type: "wheel,touch",
-    wheelSpeed: -1,
-    preventDefault: true,
-    onWheel: closeModal,
-    onTouchMove: closeModal,
-  });
-}
-
+      // Close modal on scroll/wheel/touchmove
+      Observer.create({
+        target: window,
+        type: "wheel,touch",
+        wheelSpeed: -1,
+        preventDefault: true,
+        onWheel: closeModal,
+        onTouchMove: closeModal,
+      });
+    }
 
     // pannel hero
     if ($(".panel-hero").length > 0) {
@@ -182,7 +181,7 @@
           const rect = firstTitle.getBoundingClientRect();
           const currentTop = rect.top;
 
-          const fixedOffset = window.innerWidth < 992 ? 25 : 25;
+          const fixedOffset = window.innerWidth < 992 ? 25 : 10;
 
           gsap.to(firstTitle, {
             y: fixedOffset - currentTop,
@@ -309,145 +308,115 @@
     }
 
     // panel three
-    if ($(".cmf").length > 0) {
-      const firstTitle = document.querySelector(".stick-top");
-      const otherTitles = gsap.utils.toArray(
-        ".cmf .text-image-fill:not(.stick-top)"
-      );
 
-      let offset =
-        window.innerWidth < 992
-          ? window.innerHeight * 0.4
-          : window.innerHeight * 0.25;
-      let targetScale = window.innerWidth < 992 ? 0.8 : 0.28;
+    // panel six
+    if ($(".panel-six").length > 0) {
+      const $lastPanel = $("#lastPanel");
+      const $drf = $(".drf");
+      let modalOpen = false;
 
+      // Open modal
+      $(".drf img").on("click", function () {
+        if (modalOpen) return;
+
+        modalOpen = true;
+        $drf.addClass("hidden");
+        $lastPanel.addClass("last-panel-active");
+
+        // Disable body scroll while modal open
+        $("body").css("overflow", "hidden");
+
+        gsap.fromTo(
+          $lastPanel,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: "power2.out" }
+        );
+      });
+
+      // CLOSE MODAL on wheel or touch (mobile)
+      Observer.create({
+        target: window,
+        type: "wheel,touch",
+        wheelSpeed: -1,
+        preventDefault: true,
+        onWheel: closeModal,
+        onTouchMove: closeModal,
+      });
+
+      function closeModal(self) {
+        if (!modalOpen) return;
+
+        modalOpen = false;
+
+        gsap.to($lastPanel, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            $lastPanel.removeClass("last-panel-active");
+            gsap.set($lastPanel, { opacity: 1 });
+            $drf.removeClass("hidden");
+
+            // Restore body scroll
+            $("body").css("overflow", "visible");
+          },
+        });
+      }
+
+      // Keep DRF visibility for last section
+      $(window).on("scroll", function () {
+        if (modalOpen) return;
+
+        if (isInLastSection()) $drf.addClass("hidden");
+        else $drf.removeClass("hidden");
+      });
+
+      function isInLastSection() {
+        const winTop = $(window).scrollTop();
+        const lastTop = $lastPanel.offset().top;
+        const lastBottom = lastTop + $lastPanel.outerHeight();
+        return winTop >= lastTop - 50 && winTop < lastBottom - 50;
+      }
+    }
+
+    // if ($(".cmf").length > 0) {
+
+    //   const endDistance = window.innerHeight * 2;
+
+    //   ScrollTrigger.create({
+    //     trigger: ".cmf-wrp",
+    //     start: "top top",
+    //     end: `+=${endDistance}`,
+    //     pin: true,
+    //     scrub: true,
+    //   });
+
+    // }
+
+    if ($(".cmf-wrp").length > 0) {
+      const endDistance = window.innerHeight * 2;
+
+      // Pin the section (same as you already had)
       ScrollTrigger.create({
-        trigger: ".cmf",
-        start: `top -${offset}px`,
-        endTrigger: ".rcd",
-        end: "top top",
-        pin: ".cmf.panel__inner",
-        pinSpacing: false,
-        scrub: 1.5,
-
-        onEnter: () => {
-          const rect = firstTitle.getBoundingClientRect();
-          const currentTop = rect.top;
-          const fixedOffset = window.innerWidth < 992 ? 60 : 70;
-
-          // Animate stick-top
-          gsap.to(firstTitle, {
-            y: fixedOffset - currentTop,
-            scale: targetScale,
-            transformOrigin: "top center",
-            opacity: 0.2,
-            duration: 1.5,
-            ease: "expo.out",
-          });
-
-          // Fade out other titles
-          gsap.to(otherTitles, {
-            opacity: 0,
-            y: -80,
-            duration: 0.7,
-            ease: "expo.out",
-          });
-        },
-
-        onLeaveBack: () => {
-          // Reset stick-top
-          gsap.to(firstTitle, {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            transformOrigin: "top center",
-            duration: 1.5,
-            ease: "expo.out",
-          });
-
-          // Reset other titles
-          gsap.to(otherTitles, {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            ease: "expo.out",
-          });
+        trigger: ".cmf-wrp",
+        start: "top top",
+        end: `+=${endDistance}`,
+        pin: true,
+        scrub: true,
+      });
+      gsap.to(".cmf-wrp .fade-on-scroll", {
+        opacity: 0,
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".cmf-wrp",
+          start: "top top",
+          end: `+=${endDistance / 2}`,
+          scrub: true,
         },
       });
     }
 
-    // panel six
-if ($(".panel-six").length > 0) {
-  const $lastPanel = $("#lastPanel");
-  const $drf = $(".drf");
-  let modalOpen = false;
-
-  // Open modal
-  $(".drf img").on("click", function () {
-    if (modalOpen) return;
-
-    modalOpen = true;
-    $drf.addClass("hidden");
-    $lastPanel.addClass("last-panel-active");
-
-    // Disable body scroll while modal open
-    $("body").css("overflow", "hidden");
-
-    gsap.fromTo(
-      $lastPanel,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6, ease: "power2.out" }
-    );
-  });
-
-  // CLOSE MODAL on wheel or touch (mobile)
-  Observer.create({
-    target: window,
-    type: "wheel,touch",
-    wheelSpeed: -1,
-    preventDefault: true,
-    onWheel: closeModal,
-    onTouchMove: closeModal,
-  });
-
-  function closeModal(self) {
-    if (!modalOpen) return;
-
-    modalOpen = false;
-
-    gsap.to($lastPanel, {
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => {
-        $lastPanel.removeClass("last-panel-active");
-        gsap.set($lastPanel, { opacity: 1 });
-        $drf.removeClass("hidden");
-
-        // Restore body scroll
-        $("body").css("overflow", "visible");
-      },
-    });
-  }
-
-  // Keep DRF visibility for last section
-  $(window).on("scroll", function () {
-    if (modalOpen) return;
-
-    if (isInLastSection()) $drf.addClass("hidden");
-    else $drf.removeClass("hidden");
-  });
-
-  function isInLastSection() {
-    const winTop = $(window).scrollTop();
-    const lastTop = $lastPanel.offset().top;
-    const lastBottom = lastTop + $lastPanel.outerHeight();
-    return winTop >= lastTop - 50 && winTop < lastBottom - 50;
-  }
-}
-
-
-    // Reset scroll on reload
     $(window).on("beforeunload", function () {
       $(window).scrollTop(0);
     });

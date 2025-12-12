@@ -111,7 +111,7 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Arial, sans-serif !important;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   overflow-x: clip;
   background-color: #ffffff;
   color: #000000;
@@ -243,6 +243,21 @@ p {
 .panel-hero .ig-2 > div {
   --x: 90%;
   --y: 100%;
+}
+
+.first-title-wrapper {
+  position: relative;
+  z-index: 99999999999;
+}
+.first-title-wrapper::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0px;
+  background-color: #ffffff;
+  width: 100vw;
+  min-width: 100vw;
+  top: -100px;
+  height: 150px;
 }
 
 .panel-two h1 {
