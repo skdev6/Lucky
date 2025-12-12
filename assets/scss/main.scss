@@ -1,0 +1,802 @@
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-CondensedBlack.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-CondensedBold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-LightItalic.ttf") format("truetype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-MediumItalic.ttf") format("truetype");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-Thin.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-ThinItalic.ttf") format("truetype");
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-UltraLight.ttf") format("truetype");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    src: url("/assets/fonts/HelveticaNeue-UltraLightItalic.ttf") format("truetype");
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 0.833vw;
+    overflow-x: clip;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif !important;
+    overflow-x: clip;
+    background-color: #ffffff;
+    color: #000000;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #cae6f7;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-button,
+    &::-webkit-scrollbar-thumb {
+        background-color: #D3AF37;
+        border-radius: 5px;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+.fw-7 {
+    font-weight: 700 !important;
+}
+
+.fw-9 {
+    font-weight: 900 !important;
+}
+
+.fw-8 {
+    font-weight: 800 !important;
+}
+
+.fw-5 {
+    font-weight: 500 !important;
+}
+
+.fw-6 {
+    font-weight: 600 !important;
+}
+
+.fw-4 {
+    font-weight: 400 !important;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-image-fill {
+    font-weight: 900;
+    background-image: url("../../assets/images/text-bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    --x: 50%;
+    --y: 20%;
+    background-position: var(--x) var(--y);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.panel-wrapper {
+    width: 100%;
+}
+
+.panel {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    position: relative;
+
+    .panel__inner {
+        min-width: 100vw !important;
+        text-align: center;
+        padding-inline: 16px;
+    }
+}
+
+.pin-spacer {
+    z-index: 999999 !important;
+}
+
+.panel-hero {
+
+    .title-animation {
+        opacity: 0;
+        visibility: hidden;
+        font-size: 13.5rem;
+        line-height: 0.9;
+        letter-spacing: -2.5px;
+        width: 100%;
+
+        &>div {
+            background-image: url("../../assets/images/text-bg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: var(--x) var(--y);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            --x: 90%;
+            --y: 70%;
+        }
+
+        @media only screen and (max-width: 991px) {
+            font-size: 11rem;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width:576px) {
+            font-size: 13rem;
+        }
+    }
+
+    .pin-spacer {
+        min-width: 100vw !important;
+        text-align: center;
+    }
+
+    .ig-2 {
+        &>div {
+            --x: 90%;
+            --y: 100%;
+        }
+    }
+
+}
+
+
+.panel-two {
+    h1 {
+        font-size: 5.5rem;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -1.5px;
+
+        &:nth-last-of-type(1) {
+            margin-bottom: 0px;
+        }
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 9.5rem;
+            line-height: 1.1;
+            letter-spacing: 0px;
+        }
+    }
+
+    .clip-text {
+        font-weight: 900;
+        background-image: url("../../assets/images/text-bg.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        --x: 50%;
+        --y: 20%;
+        background-position: var(--x) var(--y);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+}
+
+.bg-s {
+    @media only screen and (max-width: 575px) {
+        display: none;
+    }
+}
+
+.bg-p {
+    display: block;
+
+    @media only screen and (min-width: 576px) {
+        display: none;
+    }
+}
+
+.panel-three {
+
+    h1 {
+        font-size: 9rem;
+        font-weight: 700;
+        line-height: 0.87;
+        letter-spacing: -7px;
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 9rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        &:nth-of-type(1) {
+            --x: 40%;
+            --y: 66%;
+        }
+
+        &:nth-of-type(2) {
+            --x: 60%;
+            --y: 70%;
+        }
+
+        &:nth-of-type(3) {
+            --x: 90%;
+            --y: 75%;
+        }
+
+        &:nth-of-type(4) {
+            --x: 100%;
+            --y: 90%;
+        }
+    }
+
+    .dcf {
+        font-size: 8.938rem;
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 8rem;
+            line-height: 1;
+            letter-spacing: 0px;
+        }
+    }
+
+    .bgh {
+        @media only screen and (max-width: 576px) {
+            font-size: 9rem;
+        }
+    }
+}
+
+.panel-five {
+    padding-block-start: 140px !important;
+
+    @media only screen and (max-width: 991px) {
+        padding-block-start: 50px !important;
+    }
+
+    h1 {
+        font-size: 4.5rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -1px;
+        margin-bottom: 4px;
+
+        &:nth-last-of-type(1) {
+            margin-bottom: 0px;
+        }
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 6rem;
+            line-height: 1;
+            letter-spacing: 0px;
+        }
+    }
+
+    .sticky-line {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mb-50 {
+        margin-bottom: 50px;
+    }
+
+}
+
+.pr-5 {
+    h1 {
+        font-size: 4.5rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -1px;
+        margin-bottom: 4px;
+
+        &:nth-last-of-type(1) {
+            margin-bottom: 0px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 7rem;
+            line-height: 1.1;
+            letter-spacing: -0.3px;
+        }
+    }
+
+    .mask-image {
+        img {
+            transform: translateY(-50%) scale(1.3) !important;
+            height: 100%;
+
+            @media only screen and (max-width: 576px) {
+                transform: translateY(-56%) scale(1.8) !important;
+            }
+        }
+    }
+}
+
+.dn {
+    display: none;
+
+    @media only screen and (min-width: 576px) {
+        display: block;
+    }
+}
+
+.fw-7 {
+    font-weight: 700 !important;
+}
+
+.fw-8 {
+    font-weight: 800 !important;
+}
+
+.fw-5 {
+    font-weight: 500 !important;
+}
+
+.fw-6 {
+    font-weight: 600 !important;
+}
+
+.fw-4 {
+    font-weight: 400 !important;
+}
+
+.panel-six {
+    padding-block-end: 40px !important;
+
+    p {
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 0.95;
+
+        @media only screen and (max-width: 991px) {
+            font-size: 6rem;
+            line-height: 1;
+        }
+
+        @media only screen and (max-width: 575px) {
+            font-size: 7rem;
+            line-height: 1.1;
+        }
+    }
+
+    .mask-image {
+        p {
+            margin-bottom: 2.5rem;
+
+            @media only screen and (max-width: 767px) {
+                margin-bottom: 7rem;
+            }
+
+            &:nth-last-of-type(1) {
+                margin-bottom: 0px;
+            }
+        }
+
+        img {
+            transform: translateY(-50%) scale(1.3) !important;
+        }
+
+    }
+
+    .sticky-line {
+        gap: 2.5rem;
+
+        @media only screen and (max-width: 767px) {
+            gap: 7rem;
+        }
+    }
+}
+
+.prt {
+    padding-top: 160px !important;
+
+    @media only screen and (max-width: 991px) {
+        padding-top: 100px !important;
+    }
+}
+
+.stick-c {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+
+    h2 {
+        font-size: 6.25rem;
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -2.5px;
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 9rem;
+            line-height: 1;
+            letter-spacing: 0px;
+        }
+    }
+}
+
+.drf {
+    position: fixed;
+    top: 5rem;
+    right: 8.75rem;
+    z-index: 999999999;
+
+    @media only screen and (max-width: 991px) {
+        top: 27%;
+        right: 6rem;
+    }
+
+    img {
+        max-width: 15rem;
+        animation: rotateFloat 20s linear infinite alternate;
+        cursor: pointer;
+
+        @media only screen and (max-width: 991px) {
+            width: 60px;
+            height: auto;
+        }
+    }
+
+}
+
+@keyframes rotateFloat {
+    0% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+
+    25% {
+        transform: rotate(90deg) translate(-4.375rem, -1.875rem);
+    }
+
+    50% {
+        transform: rotate(180deg) translate(-0.625rem, 2.5rem);
+    }
+
+    75% {
+        transform: rotate(270deg) translate(4.375rem, 0px);
+    }
+
+    100% {
+        transform: rotate(360deg) translate(0, 0);
+    }
+}
+
+.ert {
+    img {
+        max-width: 15rem;
+    }
+}
+
+.panel-five {
+    position: relative;
+}
+
+.pt-160 {
+    padding-top: 130px !important;
+}
+
+.drcg {
+    position: absolute;
+    top: 40px !important;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem !important;
+    letter-spacing: -1px !important;
+
+    @media only screen and (max-width: 767px) {
+        font-size: 6rem !important;
+    }
+
+}
+
+.rel {
+    position: relative;
+}
+
+.bottom-line {
+    text-align: center;
+    margin-bottom: 30px;
+
+    @media only screen and (max-width: 576px) {
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 2rem;
+        line-height: 0.8;
+        letter-spacing: -1px;
+        font-weight: 500;
+        --x: 10%;
+        --y: 80%;
+
+        @media only screen and (max-width: 991px) {
+            font-size: 20px !important;
+            letter-spacing: 0px;
+        }
+    }
+}
+
+.shimmer-chars {
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-image: url('../images/text-bg.jpg');
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 100%;
+    animation: shimmer 50s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 100;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+.mask-image {
+    position: relative;
+    background-color: #ffffff;
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-56%);
+        width: 100%;
+        max-height: 100vh;
+        mix-blend-mode: lighten;
+        pointer-events: none;
+    }
+}
+
+.title-split {
+
+    &>div {
+        background-image: url("../../assets/images/text-bg.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: var(--x) var(--y);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        opacity: 0;
+        --x: 20%;
+        --y: 30%;
+    }
+}
+
+
+.oc {
+    overflow: hidden;
+}
+
+
+.pr-4 {
+    h1 {
+        font-size: 8.5rem;
+
+        @media only screen and (max-width: 991px) {
+            letter-spacing: -1px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 11rem;
+            line-height: 1.1;
+            letter-spacing: 0px;
+        }
+    }
+
+    .mask-image {
+        img {
+            transform: translateY(-70%);
+        }
+    }
+}
+
+.last-panel {
+    position: relative;
+
+    p {
+        font-weight: 600;
+    }
+}
+
+
+#lastPanel.last-panel-active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999999;
+    background: white;
+
+    #luckyTitle {
+        display: block;
+    }
+}
+
+#luckyTitle {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: uppercase;
+    font-size: 36px;
+    font-weight: 700;
+    --x: 20%;
+    --y: 80%;
+    display: none;
+    min-width: 300px;
+    text-align: center;
+
+    @media only screen and (max-width: 991px) {
+        font-size: 24px;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+.last-panel {
+    .mask-image {
+        img {
+            transform: translateY(-50%) scale(1.3) !important;
+
+            @media only screen and (max-width: 991px) {
+                transform: translateY(-50%) scale(1.9) !important;
+            }
+        }
+    }
+}
