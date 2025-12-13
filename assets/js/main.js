@@ -4,6 +4,25 @@
   jQuery(function () {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
 
+function addRotationAni(el){
+  gsap.set(el, { transformOrigin: "50% 50%" });
+
+  return gsap.timeline({
+    repeat: -1,
+    defaults: {
+      duration:3,
+      ease: "none"
+    }
+  })
+  .to(el, { rotation:"+=90", xPercent:-10, yPercent:-8 })
+  .to(el, { rotation:"+=90", xPercent:-2,  yPercent:8 })
+  .to(el, { rotation:"+=90", xPercent:10,  yPercent:0 })
+  .to(el, { rotation:"+=90", xPercent:0,   yPercent:0 });
+}
+	  
+	  let rightCircleAni = addRotationAni(".drf img");
+	  
+	  
   if ($(".panel-wrapper").length > 0) {
     const panels = gsap.utils.toArray(".panel");
     let currentIndex = 0;
@@ -109,7 +128,7 @@
 
     let headerTopLogo = null;
     let heroWrap = $(".panel-hero");
-    let textScale = .3;
+    let textScale = window.innerWidth > 991 ? .2 : .5;
     heroWrap.each(function () {
       var hero = $(this);
       var header = $(this).find(".header__area");
@@ -175,9 +194,9 @@
 
         var hTOpClient = headerTopLogo.getBoundingClientRect();
         var StickyTopClient = stickyTop[0].getBoundingClientRect();
-
+		var scaling = window.innerWidth > 991 ? .4 : .6;
         gsap.to(stickyTop, {
-          scale: minimize ? .4 : 1,
+          scale: minimize ? scaling : 1,
           ease: "expo.out",
           y: minimize ? (hTOpClient.y - StickyTopClient.y) + hTOpClient.height : 0,
           transformOrigin: "top 50%",
@@ -194,7 +213,6 @@
         trigger: panel2,
         start: "top -2%",
         end: "bottom top",
-        markers:true,
         onEnter() {
           titleAni(true);
           gsap.set(panelWrap, {
@@ -263,10 +281,10 @@
         start: `top 80%`,
         end: "top top",
         onEnter() {
-          titleAni(true);
+          rightCircleAni.pause();
         },
         onLeaveBack() {
-          titleAni(false);
+          rightCircleAni.play();
         }
       })
     })

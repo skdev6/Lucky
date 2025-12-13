@@ -661,4 +661,23 @@ p {
   animation: shimmer 5s linear infinite;
 }
 
+.panel .panel__inner {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.drf img {
+  animation: none;
+}
+
+.text-gradient-effect {
+  text-transform: uppercase;
+}
+
+@media (max-width: 991px) {
+  .pt-160 {
+    padding-top: 50px !important;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */
